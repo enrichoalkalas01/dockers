@@ -1,0 +1,16 @@
+# Stage 1: Build the Node.js app
+FROM node:18.18.0-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install -g npm@latest && \
+    npm install && \
+    npm cache clean --force
+
+COPY . .
+
+RUN npx prisma generate
+
+CMD ["node", "server.js"]
